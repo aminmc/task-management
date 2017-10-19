@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./taskManagement;DB_CLOSE_ON_EXIT=FALSE
+  application:
+    name: task-management
+camunda:
+  bpm:
+    database:
+      type: h2
+    enabled: true
+    history-level: full
+    id-generator: strong

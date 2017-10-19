@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.10.0">
+  <bpmn:process id="daily-checks" name="Daily Checks" isExecutable="true">
+    <bpmn:sequenceFlow id="SequenceFlow_0d5ecoo" sourceRef="StartEvent_1" targetRef="Task_0z4jp8g" />
+    <bpmn:endEvent id="EndEvent_0gjs5sj" name="check complete">
+      <bpmn:incoming>SequenceFlow_1amlum3</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_161i9gs" sourceRef="BoundaryEvent_1lfwukz" targetRef="Task_10cpdsu" />
+    <bpmn:endEvent id="EndEvent_09nxc56" name="esclation notified">
+      <bpmn:incoming>SequenceFlow_1mak7dk</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1mak7dk" sourceRef="Task_10cpdsu" targetRef="EndEvent_09nxc56" />
+    <bpmn:userTask id="Task_0z4jp8g" name="Perform morning check">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="uniformComplete" label="Uniform ok?" type="enum">
+            <camunda:validation>
+              <camunda:constraint name="required" config="true" />
+            </camunda:validation>
+            <camunda:value id="Value_161rb3t" name="Yes" />
+            <camunda:value id="Value_0pe3vvk" name="No" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0d5ecoo</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1amlum3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_1" name="daily 7am check">
+      <bpmn:outgoing>SequenceFlow_0d5ecoo</bpmn:outgoing>
+      <bpmn:timerEventDefinition>
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0/5 * * * ?</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:boundaryEvent id="BoundaryEvent_1lfwukz" name="esclation" cancelActivity="false" attachedToRef="Task_0z4jp8g">
+      <bpmn:outgoing>SequenceFlow_161i9gs</bpmn:outgoing>
+      <bpmn:timerEventDefinition>
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0/10 * * * ?</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:scriptTask id="Task_10cpdsu" name="Notifiy check not complete" scriptFormat="groovy">
+      <bpmn:incoming>SequenceFlow_161i9gs</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1mak7dk</bpmn:outgoing>
+      <bpmn:script><![CDATA[println('Morning check not complete');]]></bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1amlum3" sourceRef="Task_0z4jp8g" targetRef="EndEvent_0gjs5sj" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="daily-checks">
+      <bpmndi:BPMNEdge id="SequenceFlow_0d5ecoo_di" bpmnElement="SequenceFlow_0d5ecoo">
+        <di:waypoint xsi:type="dc:Point" x="227" y="284" />
+        <di:waypoint xsi:type="dc:Point" x="291" y="284" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="259" y="262.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0gjs5sj_di" bpmnElement="EndEvent_0gjs5sj">
+        <dc:Bounds x="483" y="266" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="463" y="305" width="77" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_161i9gs_di" bpmnElement="SequenceFlow_161i9gs">
+        <di:waypoint xsi:type="dc:Point" x="391" y="342" />
+        <di:waypoint xsi:type="dc:Point" x="391" y="416" />
+        <di:waypoint xsi:type="dc:Point" x="451" y="416" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="406" y="372.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_09nxc56_di" bpmnElement="EndEvent_09nxc56">
+        <dc:Bounds x="607" y="398" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="584" y="437" width="82" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1mak7dk_di" bpmnElement="SequenceFlow_1mak7dk">
+        <di:waypoint xsi:type="dc:Point" x="551" y="416" />
+        <di:waypoint xsi:type="dc:Point" x="607" y="416" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="579" y="394.5" width="0" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1jt9ek9_di" bpmnElement="Task_0z4jp8g">
+        <dc:Bounds x="291" y="244" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1a001yr_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="191" y="266" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="169" y="317" width="79" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BoundaryEvent_1iawyh7_di" bpmnElement="BoundaryEvent_1lfwukz">
+        <dc:Bounds x="373" y="306" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="399" y="335" width="44" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ScriptTask_0lv0rnz_di" bpmnElement="Task_10cpdsu">
+        <dc:Bounds x="451" y="376" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1amlum3_di" bpmnElement="SequenceFlow_1amlum3">
+        <di:waypoint xsi:type="dc:Point" x="391" y="284" />
+        <di:waypoint xsi:type="dc:Point" x="483" y="284" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="392" y="263" width="90" height="13" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
