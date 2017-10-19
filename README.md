@@ -1,6 +1,11 @@
 # task-management
 Simple example of camunda using generated forms.
 
+## Prerequisites
+Download:
+
+1. https://camunda.org/download/modeler/
+
 ## Running the application
 
 ``gradle.bat clean build bootRun``
