@@ -1,0 +1,24 @@
+version: '2'
+
+volumes:
+    camundadb: {}
+
+services:
+  camundadb:
+      image: postgres:9.6.1
+      container_name: camundadb_workflow
+      ports:
+        - 5432:5432
+      volumes:
+       - camundadb:/var/lib/postgresdb/data
+      environment:
+        - POSTGRES_DB=camunda
+        - POSTGRES_PASSWORD=camunda
+        - POSTGRES_USER=camunda
+  task-management:
+      build: .
+      ports:
+        - 8080:8080
+
+      depends_on:
+        - camundadb
