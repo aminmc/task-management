@@ -1,15 +1,35 @@
 spring:
+  application:
+    name: task-management
+
+---
+spring:
+  profiles: docker
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://camundadb:5432/camunda
     username: camunda
     password: camunda
-  application:
-    name: task-management
+
 camunda:
   bpm:
     database:
       type: postgres
+    enabled: true
+    history-level: full
+    id-generator: strong
+
+---
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./taskManagement;DB_CLOSE_ON_EXIT=FALSE
+
+camunda:
+  bpm:
+    database:
+      type: h2
     enabled: true
     history-level: full
     id-generator: strong

@@ -18,6 +18,11 @@ repositories {
     mavenCentral()
 }
 
+def profiles = 'local'
+
+bootRun {
+    args = ["--spring.profiles.active=" + profiles]
+}
 
 
 dependencies {
@@ -25,6 +30,7 @@ dependencies {
     compile 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:2.3.0-alpha1'
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
     compile 'org.postgresql:postgresql:42.1.4'
+    compile 'com.h2database:h2:1.4.196'
     compileOnly('org.projectlombok:lombok')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
